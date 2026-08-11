@@ -1,6 +1,6 @@
 import { useState, useEffect, useMemo } from 'react'
 import { useSearchParams } from 'react-router-dom'
-import { searchServices, mockCategories, filterByDistance, calculateDistance } from '../data/mockData'
+import { searchServices, mockCategories, calculateDistance } from '../data/mockData'
 import ServiceCard from '../components/ServiceCard'
 import GoogleMap from '../components/maps/GoogleMap'
 import { FiFilter, FiX, FiMapPin, FiList } from 'react-icons/fi'
@@ -75,7 +75,7 @@ function SearchResults() {
   }
 
   return (
-    <div className="h-[calc(100vh-96px)] flex flex-col lg:flex-row">
+    <div className="min-h-[calc(100dvh-96px)] flex flex-col lg:flex-row">
       {/* Liste - 60% desktop gauche */}
       <div className={`${
         showMobileList ? 'flex' : 'hidden'

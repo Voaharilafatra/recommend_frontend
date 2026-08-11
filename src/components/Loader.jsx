@@ -2,7 +2,7 @@ import 'animate.css'
 
 function Loader() {
   return (
-    <div className="flex min-h-[calc(100vh-96px)] items-center justify-center bg-white px-5 py-20">
+    <div className="flex min-h-screen items-center justify-center bg-white px-5 py-20">
       <div className="flex flex-col items-center gap-6 rounded-[2rem] border border-zinc-200 bg-white/95 p-10 shadow-2xl animate__animated animate__zoomIn">
         {/* Cercle de chargement animé */}
         <div className="relative flex h-20 w-20 items-center justify-center rounded-full bg-yellow-50 animate__animated animate__pulse animate__infinite">

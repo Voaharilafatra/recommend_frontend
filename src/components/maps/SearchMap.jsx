@@ -71,7 +71,7 @@ function SearchMap({ initialQuery = '', initialCategory = '' }) {
   }
 
   return (
-    <div className="relative h-[calc(100vh-96px)] flex flex-col lg:flex-row">
+    <div className="relative min-h-[calc(100dvh-96px)] flex flex-col lg:flex-row">
       {/* Overlay recherche */}
       <div className="absolute top-4 left-4 right-4 z-20 lg:left-auto lg:right-auto lg:w-[calc(60%-2rem)] lg:max-w-xl">
         <form onSubmit={handleSearch} className="flex gap-2">

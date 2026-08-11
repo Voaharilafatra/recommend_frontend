@@ -1,5 +1,5 @@
 import { useState, useEffect, useMemo } from 'react'
-import { FiSearch, FiFilter, FiMapPin, FiShare2, FiPlus, FiMinus, FiMaximize, FiList, FiX } from 'react-icons/fi'
+import { FiSearch, FiFilter, FiMapPin, FiShare2, FiMaximize, FiList, FiX } from 'react-icons/fi'
 import GoogleMap from '../components/maps/GoogleMap'
 import ServiceCard from '../components/ServiceCard'
 import { searchServices, mockCategories } from '../data/mockData'
@@ -53,7 +53,7 @@ function MapView() {
   }
 
   return (
-    <div className="relative h-screen w-full">
+    <div className="relative min-h-[calc(100dvh-96px)] w-full">
       <GoogleMap
         services={results}
         center={selectedService ? { lat: selectedService.lat, lng: selectedService.lng } : userLocation}

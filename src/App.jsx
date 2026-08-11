@@ -30,12 +30,11 @@ function PageLoader() {
 }
 
 function Layout() {
-  const { user, isAuthenticated } = useAuth()
+  const { isAuthenticated } = useAuth()
   const location = useLocation()
 
   const isFullScreenMap = location.pathname === '/map'
   const isAuthPage = location.pathname === '/oauth'
-  const isPublicHome = location.pathname === '/'
 
   const protectedRoutes = [
     '/dashboard', '/profile', '/favorites', '/my-services', '/my-reviews',
@@ -43,48 +42,51 @@ function Layout() {
   ]
   const isProtectedRoute = protectedRoutes.some((r) => location.pathname.startsWith(r))
   const showDashboardLayout = isAuthenticated && isProtectedRoute && !isFullScreenMap
+  const showPublicChrome = !isFullScreenMap && !isAuthPage
 
   return (
-    <>
-      {!isFullScreenMap && !isAuthPage && (showDashboardLayout ? <HeaderDashboard /> : !isPublicHome || !isAuthenticated ? <Header /> : <Header />)}
+    <div className="flex min-h-screen flex-col bg-white">
+      {showPublicChrome && (showDashboardLayout ? <HeaderDashboard /> : <Header />)}
 
-      <Suspense fallback={<PageLoader />}>
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/oauth" element={<OAuth />} />
-          <Route path="/service/:id" element={<ServiceDetail />} />
+      <main className="flex-1">
+        <Suspense fallback={<PageLoader />}>
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/oauth" element={<OAuth />} />
+            <Route path="/service/:id" element={<ServiceDetail />} />
 
-          <Route path="/dashboard" element={
-            <PrivateRoute><Dashboard /></PrivateRoute>
-          } />
-          <Route path="/profile" element={
-            <PrivateRoute><Profile /></PrivateRoute>
-          } />
-          <Route path="/favorites" element={
-            <PrivateRoute><Favorites /></PrivateRoute>
-          } />
-          <Route path="/my-services" element={
-            <PrivateRoute requiredRoles={['prestataire', 'admin']}><MyServices /></PrivateRoute>
-          } />
-          <Route path="/my-reviews" element={
-            <PrivateRoute><MyReviews /></PrivateRoute>
-          } />
-          <Route path="/search" element={
-            <PrivateRoute><SearchResults /></PrivateRoute>
-          } />
-          <Route path="/map" element={
-            <PrivateRoute><MapView /></PrivateRoute>
-          } />
+            <Route path="/dashboard" element={
+              <PrivateRoute><Dashboard /></PrivateRoute>
+            } />
+            <Route path="/profile" element={
+              <PrivateRoute><Profile /></PrivateRoute>
+            } />
+            <Route path="/favorites" element={
+              <PrivateRoute><Favorites /></PrivateRoute>
+            } />
+            <Route path="/my-services" element={
+              <PrivateRoute requiredRoles={['prestataire', 'admin']}><MyServices /></PrivateRoute>
+            } />
+            <Route path="/my-reviews" element={
+              <PrivateRoute><MyReviews /></PrivateRoute>
+            } />
+            <Route path="/search" element={
+              <PrivateRoute><SearchResults /></PrivateRoute>
+            } />
+            <Route path="/map" element={
+              <PrivateRoute><MapView /></PrivateRoute>
+            } />
 
-          <Route path="*" element={<Navigate to="/" replace />} />
-        </Routes>
-      </Suspense>
+            <Route path="*" element={<Navigate to="/" replace />} />
+          </Routes>
+        </Suspense>
+      </main>
 
-      {!isFullScreenMap && !isAuthPage && (showDashboardLayout ? <FooterDashboard /> : <Footer />)}
+      {showPublicChrome && (showDashboardLayout ? <FooterDashboard /> : <Footer />)}
 
-      {!showDashboardLayout && !isFullScreenMap && !isAuthPage && <MobileNav />}
+      {!showDashboardLayout && showPublicChrome && <MobileNav />}
       <BackToTop />
-    </>
+    </div>
   )
 }
 
@@ -96,14 +98,10 @@ function App() {
     return () => clearTimeout(timer)
   }, [])
 
-  if (showLoader) {
-    return <Loader />
-  }
-
   return (
     <AuthProvider>
       <BrowserRouter>
-        <Layout />
+        {showLoader ? <Loader /> : <Layout />}
       </BrowserRouter>
     </AuthProvider>
   )
